@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <title>Order Search</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+        <style>
+            body{
+                background-color: teal;
+            
+            }
+            h2{
+                color: #EEE;
+            }
+            .container{overflow: hidden}
+            .tab{float: left;}
+            .tab-2{margin-left: 50px}
+            .tab-2 input{display: block;margin-bottom: 10px}
+            tr{transition:all .25s ease-in-out}
+            tr:hover{background-color:#EEE;cursor: pointer}
+            #table{
+                background-color: greenyellow;
+            }
+            #table2{
+                background-color: wheat;
+            }
+            p{
+                background-color: darkgray;
+            }
+        </style>
+
+        <script>$(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+              var value = $(this).val().toLowerCase();
+              $("#table tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+              });
+            });
+          });</script>
+        
+    </head>
+    <body>
+            <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+                    <a class="navbar-brand" href="#">Special Food</a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="Order.html">Order</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="Tip.html">Tip</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="O.Search.html">Order Search</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="Customer Page.html">Customer Page</a>
+                      </li>
+                    </ul>
+                  </div>  
+                </nav>
+                <br>
+        
+        <div class="container">
+            <h2>Search For your food</h2>
+            <input id="myInput" type="text" placeholder="Search..">
+            <br><br>
+            <div class="tab tab-1">
+                <table id="table" border="1">
+                    <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Price $</th>
+                    </tr>
+                    <tr>
+                        <td>Kafta</td>
+                        <td>1</td>
+                        <td>8</td>
+                    </tr>
+                    <tr>
+                        <td>Mkhlouta</td>
+                        <td>1</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>Koktel</td>
+                        <td>1</td>
+                        <td>5</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="tab tab-2">
+                Name :<input type="text" name="fname" id="fname" disabled>
+                Quantity :<input type="number" name="Quantity" id="Quantity" >
+                Price :<input type="number" name="Price" id="Price" disabled> 
+                
+                
+                <button onclick="addHtmlTableRow();">Add</button>
+                <br><br>
+                
+            </div>
+            <table class="table table-hover" id="table2">
+                <thead>
+                  <tr>
+                    <th>Order Name</th>
+                    <th>Quantity</th>
+                    <th>Price $</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+              <button onclick="saveorder()">Save Order</button> 
+              <button onclick="removeSelectedRow();">Remove Selected index</button>
+              <br><br>
+              <p id="t">Total:</p>
+          </div>
+        </div>
+        
+        <script>
+            
+            var rIndex,
+                table = document.getElementById("table");
+            
+            // check the empty input
+            function checkEmptyInput()
+            {
+                var isEmpty = false,
+                    fname = document.getElementById("fname").value,
+                    Q = document.getElementById("Quantity").value,
+                    P = document.getElementById("Price").value;
+            
+                if(fname === ""){
+                    alert("Name Connot Be Empty");
+                    isEmpty = true;
+                }
+                else if(Q === ""){
+                    alert("Quantity Connot Be Empty");
+                    isEmpty = true;
+                }
+                else if(P === ""){
+                    alert("Age Connot Be Empty");
+                    isEmpty = true;
+                }
+                return isEmpty;
+            }
+            
+
+            function addHtmlTableRow()
+            {
+                var t2 = 0;
+                var table2 = document.getElementById("table2");
+               
+                if(!checkEmptyInput()){
+                var newRow = table2.insertRow(table.length),
+                    cell1 = newRow.insertCell(0),
+                    cell2 = newRow.insertCell(1),
+                    cell3 = newRow.insertCell(2),
+                    fname = document.getElementById("fname").value,
+                    q = document.getElementById("Quantity").value,
+                    p = document.getElementById("Price").value;
+
+                    t2 =p*q;
+            
+                cell1.innerHTML = fname;
+                cell2.innerHTML = q;
+                cell3.innerHTML = t2;
+                
+                selectedRowToInput();
+            }
+            }
+            
+            
+            function selectedRowToInput()
+            {
+                
+                for(var i = 1; i < table.rows.length; i++)
+                {
+                    table.rows[i].onclick = function()
+                    {
+                      
+                      rIndex = this.rowIndex;
+                      document.getElementById("fname").value = this.cells[0].innerHTML;
+                      document.getElementById("Quantity").value = this.cells[1].innerHTML;
+                      document.getElementById("Price").value = this.cells[2].innerHTML;
+                    };
+                }
+                for(var i = 1; i < table.rows.length; i++)
+                {
+                    table2.rows[i].onclick = function()
+                    {
+                      
+                      rIndex = this.rowIndex;
+                      document.getElementById("fname").value = this.cells[0].innerHTML;
+                      document.getElementById("Quantity").value = this.cells[1].innerHTML;
+                      document.getElementById("Price").value = this.cells[2].innerHTML;
+                    };
+                }
+            }
+            selectedRowToInput();
+            
+            function removeSelectedRow()
+            {
+                if(rIndex>0)
+                table2.deleteRow(rIndex);
+                
+                document.getElementById("fname").value = "";
+                document.getElementById("Quantity").value = "";
+                document.getElementById("Price").value = "";
+            }
+            function saveorder(){
+                document.getElementById("t").innerHTML="Total: ";
+                var total = 0;
+                for(var i =1; i<document.getElementById("table2").rows.length; i++){
+                    total += parseInt(document.getElementById("table2").rows[i].cells[2].innerHTML);
+                }
+                document.getElementById("t").innerHTML="Total: "+total+"$";
+                alert("Total Price: "+total+"$"+" Succseful Order.")
+            }
+        </script>
+    </body>
+</html>
